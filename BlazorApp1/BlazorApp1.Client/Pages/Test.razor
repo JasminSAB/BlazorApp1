@@ -1,0 +1,17 @@
+﻿@page "/test"
+@inject IHttpClientFactory ClientFactory
+
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var _httpClient = ClientFactory.CreateClient("WebAPI");
+
+        var request = new HttpRequestMessage(HttpMethod.Get, _httpClient.BaseAddress + "api/test");
+
+        using var response = await _httpClient.SendAsync(request, CancellationToken.None);
+
+        var result = await response.Content.ReadFromJsonAsync<List<string>>();
+    }
+}
